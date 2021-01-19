@@ -30,8 +30,11 @@ check ability to login (Already Sign IN)
          
     if (BiometricsManager.canLoginWithBiometrics(this@LoginActivity)) {
                
-Sign In or Login With Biometrics (* optional you can provide password or server token to 
-be encrypted - that password will be decrypt for you when you will login next time - via onSuccess callback)
+Sign In or Login With Biometrics 
+
+* optional you can provide password or server token to 
+be encrypted - that password will be decrypt for you when you will login next time - via onSuccess callback
+
 
     if (BiometricsManager.canLoginWithBiometrics(this@LoginActivity)) {
         BiometricsManager.showBiometricPromptForDecryption(this@LoginActivity, biometricsCallback)       
