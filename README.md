@@ -1,31 +1,31 @@
 # Kotlin Biometrics Sample
 
 
-to check if Device Biometrics Enable
+check if Device Biometrics Enable (Device Got Biometrics Sensor And User Enable this feature)
 
     if (BiometricsManager.isDeviceBiometricsEnable(this@LoginActivity)) {
             
             
-to check if can login (Already Sign IN)
+check ability to login (Already Sign IN)
          
     if (BiometricsManager.canLoginWithBiometrics(this@LoginActivity)) {
                
-to use Sig In or Login With Biometrics
+Sign In or Login With Biometrics
 
-                if (BiometricsManager.canLoginWithBiometrics(this@LoginActivity)) {
-                    BiometricsManager.showBiometricPromptForDecryption(this@LoginActivity, bioCallback)
-                } else {
-                    BiometricsManager.showBiometricPromptForEncryption(
-                        this@LoginActivity,
-                        password.text.toString(),
-                        bioCallback
-                    )
-                }
+    if (BiometricsManager.canLoginWithBiometrics(this@LoginActivity)) {
+        BiometricsManager.showBiometricPromptForDecryption(this@LoginActivity, biometricsCallback)       
+     } else {
+        BiometricsManager.showBiometricPromptForEncryption(
+             this@LoginActivity,
+             password.text.toString(),
+             biometricsCallback
+         )
+     }
   
 you need to provide success callback
 
-        private val bioCallback = object : BiometricsCallback {
-               override fun onSuccess(encryptedText: String) {
-                   startActivity(Intent(this@LoginActivity, MainActivity::class.java))
-               }
-         }          
+    private val biometricsCallback = object : BiometricsCallback {
+        override fun onSuccess(encryptedText: String) {
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+        }
+    }       

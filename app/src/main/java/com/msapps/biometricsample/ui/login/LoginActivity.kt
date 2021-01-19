@@ -1,7 +1,6 @@
 package com.msapps.biometricsample.ui.login
 
 import android.content.Intent
-import android.hardware.biometrics.BiometricManager
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -14,7 +13,7 @@ import com.msapps.biometricsample.R
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginButton: Button
-    private val bioCallback = object : BiometricsCallback {
+    private val biometricsCallback = object : BiometricsCallback {
         override fun onSuccess(encryptedText: String) {
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))
         }
@@ -23,7 +22,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        val username = findViewById<EditText>(R.id.username)
         val password = findViewById<EditText>(R.id.password)
         loginButton = findViewById<Button>(R.id.login)
 
@@ -31,12 +29,12 @@ class LoginActivity : AppCompatActivity() {
 
         loginButton.setOnClickListener {
             if (BiometricsManager.canLoginWithBiometrics(this@LoginActivity)) {
-                BiometricsManager.showBiometricPromptForDecryption(this@LoginActivity, bioCallback)
+                BiometricsManager.showBiometricPromptForDecryption(this@LoginActivity, biometricsCallback)
             } else {
                 BiometricsManager.showBiometricPromptForEncryption(
                     this@LoginActivity,
                     password.text.toString(),
-                    bioCallback
+                    biometricsCallback
                 )
             }
         }

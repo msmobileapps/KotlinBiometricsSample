@@ -26,7 +26,7 @@ class BiometricsManager {
         }
 
         fun logout(context:AppCompatActivity) {
-            context?.getSharedPreferences(SHARED_PREFS_FILENAME, Context.MODE_PRIVATE)
+            context.getSharedPreferences(SHARED_PREFS_FILENAME, Context.MODE_PRIVATE)
                 ?.edit {
                     remove(CIPHERTEXT_WRAPPER )
                     apply()
@@ -65,7 +65,7 @@ class BiometricsManager {
          private fun encryptAndStorePassword(authResult: BiometricPrompt.AuthenticationResult) {
             authResult.cryptoObject?.cipher?.apply {
                 toEncript.let { toEncript ->
-                    val encryptedServerTokenWrapper = cryptographyManager.encryptData(Companion.toEncript, this)
+                    val encryptedServerTokenWrapper = cryptographyManager.encryptData(toEncript, this)
                     cryptographyManager.persistCiphertextWrapperToSharedPrefs(
                         encryptedServerTokenWrapper,
                         activity,
@@ -115,5 +115,5 @@ class BiometricsManager {
 }
 
 interface BiometricsCallback {
- fun onSuccess(str:String)
+ fun onSuccess(encryptedText:String)
 }
