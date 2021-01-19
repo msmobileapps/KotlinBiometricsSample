@@ -1,12 +1,13 @@
 package com.msapps.biometricsample.ui.login
 
 import android.content.Intent
+import android.hardware.biometrics.BiometricManager
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import com.msapps.bio.BiometricsManager
 import com.msapps.bio.BiometricsCallback
+import com.msapps.bio.BiometricsManager
 import com.msapps.biometricsample.R
 
 
