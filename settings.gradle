@@ -1,0 +1,3 @@
+include ':app:bio'
+include ':app'
+rootProject.name = "BiometricSample"
