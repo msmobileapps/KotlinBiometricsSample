@@ -1,5 +1,7 @@
 # Kotlin Biometrics Sample
 
+![alt_text](screen.png "image_tooltip")
+
 # Installation
 
 #### app build.gradle
