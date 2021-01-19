@@ -1,5 +1,23 @@
 # Kotlin Biometrics Sample
 
+# Installation
+
+#### app build.gradle
+
+    dependencies {
+        implementation 'com.msapps.bio:bio:1.0.0'
+    }
+  
+  
+#### project  build.gradle
+
+    allprojects {
+         repositories {
+            ...
+             maven { url 'https://dl.bintray.com/msappstdeveloper/android_biometrics_login' }
+         }
+    }
+
 
 check if Device Biometrics Enable (Device Got Biometrics Sensor And User Enable this feature)
 
@@ -22,7 +40,7 @@ Sign In or Login With Biometrics
          )
      }
   
-you need to provide success callback
+please provide success callback
 
     private val biometricsCallback = object : BiometricsCallback {
         override fun onSuccess(encryptedText: String) {

@@ -1,28 +1,44 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
+    }
+}
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
+    id 'maven-publish'
+}
+
+repositories {
+    google()
+    jcenter()
+    maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation "androidx.biometric:biometric:1.0.1"
+    implementation 'com.google.code.gson:gson:2.8.6'
 }
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
 
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
-        versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
+        versionName "1.0.0"
+        multiDexEnabled true
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -32,13 +48,64 @@ android {
     }
 }
 
-dependencies {
+group 'com.msapps.bio'
+version '1.0.0'
+tasks.withType(Javadoc).all {
+    enabled = false
+}
+//Source code packaging task
+task sourcesJar(type :Jar){
+    classifier 'sources' //Classifier to distinguish other jar packages
+    from android.sourceSets.main.java.srcDirs
+}
+//Create a document generation task
+task javadoc(type:Javadoc){
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.1'
-    implementation "androidx.biometric:biometric:1.0.1"
-    implementation 'com.google.code.gson:gson:2.8.6'
+task docJar(type :Jar,dependsOn:javadoc){
+    classifier 'doc' //Classifier to distinguish other jar packages
+    from javadoc.destinationDir
+}
+//Configuration Configuration of the output of the engineering artifact jar
+artifacts{
+    archives sourcesJar
+    archives docJar
+}
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
+bintray {
+    user = 'msappstdeveloper'
+    key = "e5dfb4146f95d6af0626e7e9a1f0357ff73c2ffe"
+    configurations = ['archives']
+    pkg {
+        repo = 'android_biometrics_login' //The name of the warehouse to be uploaded
+        name = 'android_biometrics_login'  //Uploaded project name
+        licenses = ['Apache-2.0']
+        vcsUrl = 'https://xxxx.git'//The corresponding address of github, you can not write
+        version {
+            desc = 'init'
+            released  = new Date()
+            vcsTag = '1.0'
+            attributes = ['gradle-plugin': 'xxxxx']
+        }
+    }
 
+}
+
+
+install {
+    repositories.mavenInstaller {
+        //Configure the pom file
+        pom.project {
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution 'repo'
+                }
+            }
+        }
+    }
 }
